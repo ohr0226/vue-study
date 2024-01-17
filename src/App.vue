@@ -6,7 +6,27 @@
       {{ item }}
     </a>
   </div>
-  <DiscountComponent />
+  <DiscountComponent v-if="isShow === true" />
+  <div class="tab-wrapper d-flex justify-content-center">
+    <ul class="tab-list d-flex w-25 justify-content-evenly">
+      <li>
+        <button class="btn btn-primary" @click="priceSort">가격순</button>
+      </li>
+      <li>
+        <button class="btn btn-primary" @click="priceSortReverse">
+          가격역순
+        </button>
+      </li>
+      <li>
+        <button class="btn btn-primary" @click="priceSortString">
+          가나다순
+        </button>
+      </li>
+      <li>
+        <button class="btn btn-primary" @click="sortBack">되돌리기</button>
+      </li>
+    </ul>
+  </div>
   <Transition name="fade">
     <ModalComponent
       v-bind:products="products"
@@ -45,9 +65,17 @@ export default {
     return {
       index: 0,
       isOpen: false,
+      isShow: true,
       menu: ["HOME", "ABOUT", "PRODUCTS"],
       products: data,
+      productOriginData: [...data], // data 원본 카피를 위해 ...로 뿌려서 새 배열로 담아준다.
     };
+  },
+  mounted() {
+    // lifecycle hooks
+    // setTimeout(() => {
+    //   this.isShow = false;
+    // }, 1000);
   },
   methods: {
     openModal(index) {
@@ -56,6 +84,25 @@ export default {
     },
     increase(index) {
       this.products[index].report++;
+    },
+    priceSort() {
+      this.products.sort(function (a, b) {
+        return a.price - b.price;
+      });
+    },
+    priceSortReverse() {
+      this.products.sort(function (a, b) {
+        return b.price - a.price;
+      });
+    },
+    priceSortString() {
+      this.products.sort(function (a, b) {
+        return a.title.localeCompare(b.title);
+      });
+    },
+    sortBack() {
+      this.products = [...this.productOriginData];
+      // array 값을 공유달라는 뜻이 되어버림. 여기서도 카피본을 만들어주어야함
     },
   },
   components: {

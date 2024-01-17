@@ -35,6 +35,7 @@ export default {
     };
   },
   watch: {
+    //특정 데이터가 변경될 때마다 실행되는 코드
     month(data) {
       if (data >= 13) {
         alert("13개월 이하로 작성해주시기 바랍니다.");
@@ -44,6 +45,12 @@ export default {
         alert("숫자만 입력해주시기 바랍니다.");
       }
     },
+  },
+  beforeUpdate() {
+    if (this.month === 2) {
+      alert("최소 3개월이상 입력하세요.");
+      this.month = 3;
+    }
   },
   props: {
     products: Array,

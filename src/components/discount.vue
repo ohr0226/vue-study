@@ -1,6 +1,6 @@
 <template>
   <div class="discount">
-    <h4>{{ banner }}</h4>
+    <h4>지금 결제하면 {{ discount }}% 할인</h4>
   </div>
 </template>
 
@@ -9,8 +9,16 @@ export default {
   name: "DiscountComponent",
   data() {
     return {
-      banner: "지금 결제하면 20% 할인",
+      discount: 5,
     };
+  },
+  mounted() {
+    const interval = setInterval(() => {
+      this.discount--;
+      if (this.discount === 0) {
+        clearInterval(interval);
+      }
+    }, 1000);
   },
 };
 </script>
